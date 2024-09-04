@@ -18,7 +18,7 @@ Pendientes:
 # MÓDULOS
 
 #----------------------------------------------------------------------------------------------
-...
+import random
 
 #----------------------------------------------------------------------------------------------
 # LISTAS
@@ -129,6 +129,59 @@ def menu_gestion_compra ():
             print("Volviendo al menú principal...")
         else:
             print("Opción no válida. Intente de nuevo.")
+#----------------------------------------------------------------------------------------------
+#OPCION 3 
+#----------------------------------------------------------------------------------------------
+
+def simular_dia(empresas, precios):
+    # Primera confirmación
+    confirmacion1 = input("¿Desea avanzar un día en el mercado? (s/n): ").lower()
+    if confirmacion1 != 's':
+        print("Operación cancelada. Volviendo al menú principal...")
+        return precios
+    
+    # Segunda confirmación
+    confirmacion2 = input("¿Desea avanzar un día en el mercado? (s/n): ").lower()
+    if confirmacion2 != 's':
+        print("Operación cancelada. Volviendo al menú principal...")
+        return precios
+    
+    print("\nSimulando un día de mercado...")
+    
+    # Fluctuación de precios
+    cambios_dia = []
+    for i in range(len(precios)):
+        cambio = random.uniform(-0.05, 0.05)  # Cambios de -5% a +5% (random.uniform da valores decimales)
+        nuevo_precio = precios[i] * (1 + cambio)
+        cambios_dia.append((empresas[i], precios[i], nuevo_precio))
+        precios[i] = nuevo_precio
+     # Resumen del día
+    print("\nResumen del día de mercado:")
+    for empresa, precio_anterior, precio_actual in cambios_dia:
+        print(f"{empresa}: Precio anterior ${precio_anterior:.2f} -> Precio actual ${precio_actual:.2f}")
+    return precios
+
+#----------------------------------------------------------------------------------------------
+#OPCION 4
+#----------------------------------------------------------------------------------------------
+
+def mostrar_portafolio(portafolio, empresas, precios):
+    if not portafolio:
+        print("No tienes acciones en tu portafolio.")
+        return
+
+    print("\n--- Portafolio de Inversiones ---")
+
+    for accion in portafolio:
+        empresa = accion[0]
+        cantidad = accion[1]
+        precio_compra = accion[2]
+        precio_actual = precios[empresas.index(empresa)]
+
+        print(f"Empresa: {empresa}")
+        print(f"Cantidad de acciones: {cantidad}")
+        print(f"Precio de compra: ${precio_compra:.2f}")
+        print(f"Precio actual: ${precio_actual:.2f}\n")
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
@@ -152,7 +205,7 @@ while continuar:
     print("[1] Opción 1 (Ingresar empresa)")
     print("[2] Opción 2(Comprar/vender acciones)")
     print("[3] Opción 3(Simular un día de mercado)")
-    print("[4] Opción 4(Mostrar portafolio y ganancias/pérdidas)")
+    print("[4] Opción 4(Mostrar portafolio)")
     print("[0] Salir del programa")
     print()
     opcion = int(input("Seleccione una opción: "))
@@ -164,9 +217,9 @@ while continuar:
         elif opcion == 2:  # Opción 2
             menu_gestion_compra()
         elif opcion == 3:  # Opción 3
-            ...
+            simular_dia(empresas,precios)
         elif opcion == 4:  # Opción 4
-            ...
+            mostrar_portafolio(portafolio,empresas,precios)
     else:
         input("Opción inválida. Presione ENTER para volver a seleccionar.")
 
